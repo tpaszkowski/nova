@@ -303,7 +303,7 @@ class LibvirtVifTestCase(test.TestCase):
         xml = self._get_instance_xml(d,
                                      self.net_bridge,
                                      self.mapping_bridge)
-        self._assertModel(xml)
+        self._assertModel(xml, "netfront")
 
     def test_generic_driver_none(self):
         d = vif.LibvirtGenericVIFDriver(self._get_conn())

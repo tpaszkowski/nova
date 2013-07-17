@@ -99,9 +99,15 @@ class LibvirtBaseVIFDriver(object):
         model = None
         driver = None
 
+        # For xen over libvirt we need to always use PV network
+        # drives as emulated ones will not work (xen suffixes them
+        # with -emu which makes interface name too long). Additionaly
+        # security groups will also not work for -emu suffixed interfaces.
+        if CONF.libvirt_type == "xen":
+            model = "netfront"
         # If the user has specified a 'vif_model' against the
         # image then honour that model
-        if image_meta:
+        elif image_meta:
             vif_model = image_meta.get('properties',
                                        {}).get('hw_vif_model')
             if vif_model is not None:
